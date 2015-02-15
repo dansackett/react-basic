@@ -26,8 +26,7 @@ var TodoItem = React.createClass({
             <div>
                <input
                     type='checkbox'
-                    onClick={this.props.finishTask}
-                    data-index={this.props.index}
+                    onChange={this.props.finishTask.bind(this, this.props.index)}
                     checked={this.props.task.done}>
                 </input>{this.props.task.task}
             </div>
@@ -49,13 +48,13 @@ var TodoListExample = React.createClass({
         this.setState({ newTask: '', tasks: this.state.tasks });
     },
 
-    finishTask: function(e) {
-        var done = this.state.tasks[e.target.dataset.index].done;
-        this.state.tasks[e.target.dataset.index].done = !done;
+    finishTask: function(index, e) {
+        this.state.tasks[index].done = !this.state.tasks[index].done;
         this.setState({ tasks: this.state.tasks });
     },
 
     render: function() {
+        self = this;
         return (
             <div>
                 <h1>Todo List</h1>
@@ -71,7 +70,7 @@ var TodoListExample = React.createClass({
                         <TodoItem
                             index={index}
                             task={task}
-                            finishTask={this.finishTask} />
+                            finishTask={self.finishTask} />
                     );
                 })}
             </div>
